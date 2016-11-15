@@ -50,21 +50,11 @@
 	    (turn-on-olivetti-mode)
 	    (imenu-list-minor-mode)))
 
-
-	     
-
-;(when (>= emacs-major-version 24)
-;  (require 'package)
-;  (package-initialize)
-;  (add-to-list 'package-archives '("gnu";
-;				   . "https://elpa.gnu.org/packages/"))
-;  (add-to-list 'package-archives '("melpa"
-;				   . "https://melpa.org/packages/")))
-
-
-
-(if (or (eq system-type "windows-nt") (eq system-type "msdos"))
+(if (or
+     (eq system-type "windows-nt")
+     (eq system-type "msdos"))
     (setq ispell-program-name "C:\\Program Files (x86)\\Aspell\\bin\\aspell.exe")
+  ; else
   (setq ispell-program-name "aspell"))
 
 (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
@@ -77,18 +67,4 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
-; '(fountain-add-continued-dialog t)
-; '(fountain-export-default-command (quote fountain-export-buffer-to-html))
-; '(fountain-export-font
-;   (quote
-;    ("Courier Prime" "Courier" "Courier New" "monospace")))
-; '(fountain-export-include-elements-alist
-;   (quote
-;    (("screenplay" scene-heading action character paren lines trans center)
-;     ("stageplay" section-heading scene-heading action character paren lines trans center)
-;     ("director" section-heading scene-heading action character paren lines trans center synopsis note))))
-; '(fountain-export-scene-heading-format (quote (bold double-space)))
-; '(fountain-mode-hook (quote (turn-on-olivetti-mode imenu-list-minor-mode)))
-; '(frame-background-mode nil)
-)
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))))

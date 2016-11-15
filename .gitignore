@@ -1,5 +1,20 @@
 # Compiled
 *.elc
-
+*#
+*.
+.#*
+var/
+elpa/
 # Packaging
 .cask
+# Backup Files
+*.el~
+# Local folders
+server
+/auto-save-list
+/eshell/history
+/eshell/lastdir
+/tramp
+/url/cookies
+# Local / sensitive variables
+/local.el
