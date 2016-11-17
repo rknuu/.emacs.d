@@ -23,6 +23,7 @@
 (depends-on "rake")
 (depends-on "scss-mode")
 (depends-on "textile-mode")
+(depends-on "use-package")
 (depends-on "tuareg")
 (depends-on "vlf")
 (depends-on "yaml-mode")

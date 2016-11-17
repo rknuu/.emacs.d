@@ -4,7 +4,8 @@
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 
-(setq inhibit-splash-screen t
+(setq column-number-mode t
+      inhibit-splash-screen t
       initial-scratch-message nil
       tab-width 2
       visible-bell t)
@@ -13,53 +14,58 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-(setq column-number-mode t)
-(add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
+(use-package conf-mode
+  :mode (("\\.gitconfig\\'" . conf-mode)))
+(use-package yaml-mode
+  :mode (("\\.yml\\'" . yaml-mode)
+	 ("\\.yaml\\'" . yaml-mode)))
+(use-package markdown-mode
+  :mode (("\\.md\\'" . markdown-mode)
+	 ("\\.markdown\\'" . markdown-mode))
+  :config
+  (visual-line-mode t)
+  (flyspell-mode t))
 
-;; Configure Markdown
-(add-to-list 'auto-mode-alist
-	     '("\\.md$" . markdown-mode)
-	     '("\\.markdown$" . markdown-mode))
-(add-hook 'markdown-mode-hook
-	  (lambda ()
-	    (visual-line-mode t)
-	    (flyspell-mode t)))
-
-;; Handle ANSI color on builds
-(require 'ansi-color)
-(defun colorize-compialiation-buffer ()
-  (toggle-read-only)
-  (ansi-color-apply-on-region (point-min) (point-max))
-  (toggle-read-only))
-(add-hook 'compialation-filter-hook 'colorize-compilation-buffer)
+(use-package compilation-mode
+  :init
+  (add-hook 'compialation-filter-hook
+	    (lambda()
+	      (require 'ansi-color)
+	      (toggle-read-only)
+	      (ansi-color-apply-on-region (point-min) (point-max))
+	      (toggle-read-only))))
 
 ;; Configure Fountain
-(add-to-list 'auto-mode-alist '("\\.fountain$" . fountain-mode))
-(add-hook 'fountain-mode-hook
-	  (lambda ()
-	    (setq fountain-add-continued-dialog t)
-	    (setq fountain-export-default-command 'fountain-export-buffer-to-html)
-	    (setq fountain-export-font '("Courier Prime" "Courier" "Courier New" "monospace"))
-	    (setq fountain-export-include-elements-alist
-		  '(("screenplay" scene-heading action character paren lines trans center)
-		    ("stageplay" section-heading scene-heading action character paren lines trans center)
-		    ("director" section-heading scene-heading action character paren lines trans center synopsis note)))
-	    (setq fountain-export-scene-heading-format '(bold double-space))
-	    (turn-on-olivetti-mode)
-	    (imenu-list-minor-mode)))
+(use-package fountain-mode
+  :mode "\\.fountain$"
+  :init
+  (add-hook 'fountain-mode-hook
+	    (lambda()
+	      (turn-on-olivetti-mode)
+	      (imenu-list-minor-mode)))
+  :config
+  (setq fountain-add-continued-dialog t)
+  (setq fountain-export-default-command 'fountain-export-buffer-to-html)
+  (setq fountain-export-font '("Courier Prime" "Courier" "Courier New" "monospace"))
+  (setq fountain-export-include-elements-alist
+	'(("screenplay" scene-heading action character paren lines trans center)
+	  ("stageplay" section-heading scene-heading action character paren lines trans center)
+	  ("director" section-heading scene-heading action character paren lines trans center synopsis note)))
+  (setq fountain-export-scene-heading-format '(bold double-space)))
 
-(if (or
-     (eq system-type "windows-nt")
-     (eq system-type "msdos"))
-    (setq ispell-program-name "C:\\Program Files (x86)\\Aspell\\bin\\aspell.exe")
-  ; else
-  (setq ispell-program-name "aspell"))
+(use-package ispell
+  :if (and 
+       (eq system-type "windows-nt")
+       (eq system-type "msdos"))
+  :config
+  (setq ispell-program-name "C:\\Program Files (x86)\\Aspell\\bin\\aspell.exe")
+  (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US")))
 
-(setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
+(use-package edit-server
+  :if window-system
+  :init
+  (add-hook 'after-init-hook 'server-start t))
 
-(server-start)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
