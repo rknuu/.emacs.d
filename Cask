@@ -2,6 +2,7 @@
 (source "gnu" "http://elpa.gnu.org/packages/")
 (source "org" "http://orgmode.org/elpa/")
 
+(depends-on "ahk-mode")
 (depends-on "cl")
 (depends-on "chef-mode")
 (depends-on "color-theme-solarized")
@@ -27,3 +28,8 @@
 (depends-on "tuareg")
 (depends-on "vlf")
 (depends-on "yaml-mode")
+
+;; Themes
+(depends-on "noctilux-theme")
+(depends-on "color-theme-sanityinc-tomorrow")
+(depends-on "molokai-theme")
